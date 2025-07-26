@@ -1,7 +1,6 @@
 # 🛒 Playwright End-to-End Test Suite – AutomationExercise Demo Shop
 
-## ✅ Summary (for recruiters & hiring managers)
-
+## ✅ Summary
 This is a personal QA automation project built using **Playwright + TypeScript** to simulate real-world user interactions on an e-commerce website. It covers:
 - User signup/login flows
 - Shopping cart
