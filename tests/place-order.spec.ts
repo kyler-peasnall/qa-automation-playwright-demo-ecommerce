@@ -1,40 +1,18 @@
-import { test, expect } from '@playwright/test';
-
+import { test, expect, } from '@playwright/test';
+import { RegistrationPage } from '../pages/RegistrationPage.ts';
+import { testUser } from '../data/testUser'
 test('Place an order after signup', async ({ page }) => {
-  // Go to homepage
-await page.goto('https://automationexercise.com');
 
-  // Click Signup/Login
-await page.click('a[href="/login"]');
-
-  // Fill signup form
-await page.fill('input[data-qa="signup-name"]', 'Kyler QA');
-const email = `kyler${Date.now()}@test.com`;
-await page.fill('input[data-qa="signup-email"]', email);
-await page.click('button[data-qa="signup-button"]');
-
-  // Fill details (adjust if site changes)
-await page.check('#id_gender1');
-await page.fill('input[data-qa="password"]', 'test1234');
-await page.selectOption('select[data-qa="days"]', '1');
-await page.selectOption('select[data-qa="months"]', '1');
-await page.selectOption('select[data-qa="years"]', '2000');
-await page.fill('input[data-qa="first_name"]', 'Kyler');
-await page.fill('input[data-qa="last_name"]', 'Test');
-await page.fill('input[data-qa="address"]', '123 Test St');
-await page.selectOption('select[data-qa="country"]', 'United States');
-await page.fill('input[data-qa="state"]', 'AZ');
-await page.fill('input[data-qa="city"]', 'Phoenix');
-await page.fill('input[data-qa="zipcode"]', '85001');
-await page.fill('input[data-qa="mobile_number"]', '1234567890');
-await page.click('button[data-qa="create-account"]');
-
-  // Account Created screen
-await expect(page.locator('h2:has-text("Account Created!")')).toBeVisible();
-await page.click('a[data-qa="continue-button"]');
+  //Sign Up New Account
+const registrationPage = new RegistrationPage(page);
+await registrationPage.goToHomePage();
+await registrationPage.clickSignupLogin();
+await registrationPage.fillSignupForm(testUser.name, testUser.email);
+await registrationPage.fillDetails(testUser);
+await registrationPage.continueAfterAccountCreated();
 
   // Add a product to cart
-await page.click('a[href="/products"]');
+await page.click('a[href="/products"]'); 
 const products = page.locator('.product-image-wrapper');
 await expect(products.first()).toBeVisible();
 await products.nth(0).hover();
