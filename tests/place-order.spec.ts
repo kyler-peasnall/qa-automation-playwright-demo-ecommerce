@@ -1,6 +1,8 @@
 import { test, expect, } from '@playwright/test';
 import { RegistrationPage } from '../pages/RegistrationPage.ts';
+import { PaymentPage } from '../pages/PaymentPage.ts';
 import { testUser } from '../data/testUser'
+import { paymentInfo } from '../data/paymentInfo.ts';
 test('Place an order after signup', async ({ page }) => {
 
   //Sign Up New Account
@@ -34,12 +36,8 @@ await page.fill('textarea[name="message"]', 'This is a test order.');
 await page.click('a[href="/payment"]');
 
   // Fill payment form
-await page.fill('input[name="name_on_card"]', 'Kyler QA');
-await page.fill('input[name="card_number"]', '4111111111111111');
-await page.fill('input[name="cvc"]', '123');
-await page.fill('input[name="expiry_month"]', '12');
-await page.fill('input[name="expiry_year"]', '2026');
-await page.click('#submit');
+const paymentPage = new PaymentPage(page);
+await paymentPage.cardDetails(paymentInfo);
 
   // Confirm success message
 await expect(page.getByText('Congratulations! Your order has been confirmed!')).toBeVisible();
